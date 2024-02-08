@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using MC.WebApiService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-string? connectionString = builder.GetConnectionString
-    ("DefaultConnectionString");
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
 builder.Services.AddDbContext<MovieDbContext>(options => {
     options.UseSqlServer(connectionString);
 });
