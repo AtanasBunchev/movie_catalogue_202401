@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MC.ApplicationServices.Implementation;
 
+// TODO rename to MoviesService
 public class MovieServices : IMovieServices
 {
     public readonly MovieDbContext _context;
@@ -13,6 +14,45 @@ public class MovieServices : IMovieServices
     public MovieServices(MovieDbContext context)
     {
         _context = context;
+    }
+
+    public async Task<GetMoviesResponse> GetMoviesAsync()
+    {
+        GetMoviesResponse response = new() { Movies = new() };
+
+        var movies = await _context.Movies.ToListAsync();
+
+        foreach(var movie in movies)
+        {
+            response.Movies.Add(new Movie{
+                Title = movie.Title,
+                Description = movie.Description,
+                ReleaseDate = movie.ReleaseDate
+            });
+        }
+
+        return response;
+    }
+
+    public async Task<GetByIdResponse> GetByIdAsync(GetByIdRequest request)
+    {
+        int id = request.Id;
+        var movie = await _context.Movies.SingleOrDefaultAsync(x => x.ID == id);
+
+        GetByIdResponse response = new GetByIdResponse();
+
+        if(movie == null) {
+            response.Status = BusinessStatusCodeEnum.NotFound;
+            return response;
+        }
+
+        response.Movie = new Movie {
+            Title = movie.Title,
+            Description = movie.Description,
+            ReleaseDate = movie.ReleaseDate,
+        };
+
+        return response;
     }
 
     public async Task<GetByTitleResponse> GetByTitleAsync(GetByTitleRequest request)
@@ -26,6 +66,7 @@ public class MovieServices : IMovieServices
             response.Status = BusinessStatusCodeEnum.NotFound;
             return response;
         }
+
         response.Movie = new Movie {
             Title = movie.Title,
             Description = movie.Description,

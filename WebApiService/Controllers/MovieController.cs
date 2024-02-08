@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MC.Data.Entities;
 using MC.ApplicationServices.Messaging;
 using MC.ApplicationServices.Interfaces;
 
@@ -21,18 +22,19 @@ namespace MC.WebApiService.Controllers
             _services = services;
         }
 
-        /*
-        // GET: api/Movie
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
-          if (_context.Movies == null)
-          {
-              return NotFound();
-          }
-            return await _context.Movies.ToListAsync();
+            return Ok(await _services.GetMoviesAsync());
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Movie>> GetMovie(int id)
+        {
+            return Ok(await _services.GetByIdAsync(new (id)));
+        }
+
+        /*
         // GET: api/Movie/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
@@ -123,6 +125,8 @@ namespace MC.WebApiService.Controllers
         }
 
         */
+
+
 
         /// <summary>
         ///     Find movie with a given title
