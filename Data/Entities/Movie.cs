@@ -1,4 +1,4 @@
-﻿namespace MC.Data;
+﻿namespace MC.Data.Entities;
 public class Movie
 {
     public int ID { get; set; }
