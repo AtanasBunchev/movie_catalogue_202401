@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MC.Data;
 using MC.ApplicationServices.Implementation;
-using MC.ApplicationServices.Interface;
+using MC.ApplicationServices.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

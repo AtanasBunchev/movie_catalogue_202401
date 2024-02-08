@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MC.Data.Migrations
+namespace MC.WebApiService.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
     [Migration("20240208095833_Add Genres collection")]

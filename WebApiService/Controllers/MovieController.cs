@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MC.Data.Entities;
-using MC.WebApiService.Data;
 using MC.ApplicationServices.Messaging;
+using MC.ApplicationServices.Interfaces;
 
 namespace MC.WebApiService.Controllers
 {
@@ -15,15 +14,14 @@ namespace MC.WebApiService.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly MovieDbContext _context;
         private readonly IMovieServices _services;
 
-        public MovieController(MovieDbContext context, IMoviesServices services)
+        public MovieController(IMovieServices services)
         {
-            _context = context;
             _services = services;
         }
 
+        /*
         // GET: api/Movie
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
@@ -124,6 +122,8 @@ namespace MC.WebApiService.Controllers
             return (_context.Movies?.Any(e => e.ID == id)).GetValueOrDefault();
         }
 
+        */
+
         /// <summary>
         ///     Find movie with a given title
         /// </summary>
@@ -135,7 +135,7 @@ namespace MC.WebApiService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetByTitle([FromRoute] string title)
         {
-            return Ok(await _services.GetByTitleAsync(title));
+            return Ok(await _services.GetByTitleAsync(new (title)));
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MC.Data.Migrations
+namespace MC.WebApiService.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
     partial class MovieDbContextModelSnapshot : ModelSnapshot
