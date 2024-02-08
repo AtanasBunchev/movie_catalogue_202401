@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\MC.Data.csproj" />
+    <ProjectReference Include="..\ApplicationService\MC.ApplicationService.csproj" />
   </ItemGroup>
 
 </Project>

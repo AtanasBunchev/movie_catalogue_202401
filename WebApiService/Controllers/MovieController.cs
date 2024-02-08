@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MC.Data.Entities;
 using MC.WebApiService.Data;
+using MC.ApplicationServices.Messaging;
 
 namespace MC.WebApiService.Controllers
 {
@@ -119,6 +120,25 @@ namespace MC.WebApiService.Controllers
         private bool MovieExists(int id)
         {
             return (_context.Movies?.Any(e => e.ID == id)).GetValueOrDefault();
+        }
+
+        /// <summary>
+        ///     Find movie with a given title
+        /// </summary>
+        /// <param name="title"> Movie title</param>
+        /// <returns></returns>
+        [HttpGet("search/{title}")]
+        [ProducesResponseType(typeof(GetByTitleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByTitle([FromRoute] string title)
+        {
+            var movie = await _context.Movies.SingleOrDefaultAsync(x => x.Title.Contains(title));
+
+            if(movie == null)
+                return NotFound();
+
+            return Ok(movie);
         }
     }
 }
