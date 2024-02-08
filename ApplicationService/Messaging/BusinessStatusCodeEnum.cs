@@ -3,7 +3,7 @@ namespace MC.ApplicationServices.Messaging;
 public enum BusinessStatusCodeEnum
 {
     None,
-    Found,
+    NotFound,
     MovieNotExists,
 
 };

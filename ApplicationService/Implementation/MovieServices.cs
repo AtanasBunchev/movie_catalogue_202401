@@ -4,6 +4,7 @@ namespace MC.ApplicationServices.Implementation;
 
 public class MovieServices : IMovieServices
 {
+    
 
     public async Task<GetByTitleResponse> GetByTitleAsync(GetByTitleRequest request)
     {
@@ -15,7 +16,6 @@ public class MovieServices : IMovieServices
             response.Status = BusinessStatusCodeEnum.MovieNotFound;
             return response;
         }
-        response.Status = BusinessStatusCodeEnum.Found;
         response.Movie = movie;
 
         return response;
