@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MC.WebApiService.Data;
+using MC.ApplicationServices.Implementation;
+using MC.ApplicationServices.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// DI
+builder.Services.AddScoped<IMovieServices, MovieServices>();
 
 var app = builder.Build();
 

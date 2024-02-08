@@ -16,10 +16,12 @@ namespace MC.WebApiService.Controllers
     public class MovieController : ControllerBase
     {
         private readonly MovieDbContext _context;
+        private readonly IMovieServices _services;
 
-        public MovieController(MovieDbContext context)
+        public MovieController(MovieDbContext context, IMoviesServices services)
         {
             _context = context;
+            _services = services;
         }
 
         // GET: api/Movie
@@ -133,12 +135,7 @@ namespace MC.WebApiService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetByTitle([FromRoute] string title)
         {
-            var movie = await _context.Movies.SingleOrDefaultAsync(x => x.Title.Contains(title));
-
-            if(movie == null)
-                return NotFound();
-
-            return Ok(movie);
+            return Ok(await _services.GetByTitleAsync(title));
         }
     }
 }
