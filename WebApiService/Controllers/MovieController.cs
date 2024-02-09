@@ -37,9 +37,13 @@ namespace MC.WebApiService.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.MovieModel>> PostMovie(MC.ApplicationServices.Messaging.Requests.MovieModel movie)
+        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.MovieModel>> PostMovie([FromForm] string title, [FromForm] string? description, [FromForm] DateTime releaseDate)
         {
-            return Ok(await _services.CreateMovieAsync(new (movie)));
+            return Ok(await _services.CreateMovieAsync(new() {
+                Title = title,
+                Description = description,
+                ReleaseDate = releaseDate
+            }));
         }
 
         [HttpDelete("{id}")]

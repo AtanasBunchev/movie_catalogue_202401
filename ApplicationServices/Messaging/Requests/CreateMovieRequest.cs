@@ -2,10 +2,19 @@ namespace MC.ApplicationServices.Messaging.Requests;
 
 public class CreateMovieRequest : RequestServiceBase
 {
-    public MovieModel Movie { get; set; }
+    // <summary>
+    // Gets or sets movie title model
+    // </summary>
+    required public string Title { get; set; }
 
-    public CreateMovieRequest(MovieModel movie)
-    {
-        Movie = movie;
-    }
+    // <summary>
+    // Gets or sets movie description.
+    // </summary>
+    public string? Description { get; set; }
+
+    // <summary>
+    // Gets or sets movie release date.
+    // </summary>
+    public DateTime? ReleaseDate { get; set; }
+
 };

@@ -88,12 +88,11 @@ public class MoviesService : IMoviesService
 
         try
         {
-            var model = request.Movie;
 
             Movie movie = new () {
-                Title = model.Title,
-                Description = model.Description,
-                ReleaseDate = model.ReleaseDate
+                Title = request.Title,
+                Description = request.Description,
+                ReleaseDate = request.ReleaseDate
             };
 
             _context.Movies.Add(movie);
