@@ -47,9 +47,15 @@ namespace MC.WebApiService.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.DeleteMovieResponse>> DeleteMovie(int id)
+        public async Task<ActionResult<DeleteMovieResponse>> DeleteMovie(int id)
         {
             return Ok(await _services.DeleteMovieAsync(new (id)));
+        }
+
+        [HttpPatch("{id}/active/{isActive}")]
+        public async Task<ActionResult<PatchIsActiveResponse>> PatchIsActive([FromQuery] int id, [FromQuery] bool isActive)
+        {
+            return Ok(await _services.PatchIsActiveAsync(new (id, isActive)));
         }
 
         /// <summary>

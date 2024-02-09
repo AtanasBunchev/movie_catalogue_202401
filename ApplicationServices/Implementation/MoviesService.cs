@@ -124,4 +124,22 @@ public class MoviesService : IMoviesService
 
         return response;
     }
+
+    public async Task<PatchIsActiveResponse> PatchIsActiveAsync(PatchIsActiveRequest request)
+    {
+        PatchIsActiveResponse response = new();
+        var id = request.Id;
+
+        var movie = await _context.Movies.SingleOrDefaultAsync(x => x.ID == id);
+        if(movie == null) {
+            response.Status = BusinessStatusCodeEnum.MovieNotExists;
+            return response;
+        }
+
+        movie.IsActive = request.IsActive;
+        _context.Movies.Update(movie);
+        await _context.SaveChangesAsync();
+
+        return response;
+    }
 }

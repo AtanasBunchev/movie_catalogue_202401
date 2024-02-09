@@ -8,35 +8,41 @@ namespace MC.ApplicationServices.Interfaces;
 /// </summary>
 public interface IMoviesService
 {
-    // <summary>
-    // Get all movies
-    // </summary>
-    // <returns>Return list of movies.</returns>
+    /// <summary>
+    /// Get all movies
+    /// </summary>
+    /// <returns>Return list of movies.</returns>
     public Task<GetMoviesResponse> GetMoviesAsync();
 
-    // <summary>
-    // Get movie by title
-    // </summary>
-    // <param name="request">Get title by request object</param>
-    // <returns>Return single movie by title.</returns>
+    /// <summary>
+    /// Get movie by title
+    /// </summary>
+    /// <param name="request">Get title by request object</param>
+    /// <returns>Return single movie by title.</returns>
     public Task<GetByTitleResponse> GetByTitleAsync(GetByTitleRequest request);
 
-    // <summary>
-    // Get movie by id
-    // </summary>
-    // <param name="request">Get id by request object</param>
-    // <returns>Return single movie by id.</returns>
+    /// <summary>
+    /// Get movie by id
+    /// </summary>
+    /// <param name="request">Get id by request object</param>
+    /// <returns>Return single movie by id.</returns>
     public Task<GetByIdResponse> GetByIdAsync(GetByIdRequest request);
 
-    // <summary>
-    // Create Movie
-    // </summary>
-    // <param name="request">Get movie data by request object</param>
+    /// <summary>
+    /// Create Movie
+    /// </summary>
+    /// <param name="request">Get movie data by request object</param>
     public Task<CreateMovieResponse> CreateMovieAsync(CreateMovieRequest request);
 
-    // <summary>
-    // Deletes Movie
-    // </summary>
-    // <param name="request">Get id by request object</param>
+    /// <summary>
+    /// Deletes Movie
+    /// </summary>
+    /// <param name="request">Get id by request object</param>
     public Task<DeleteMovieResponse> DeleteMovieAsync(GetByIdRequest request);
+
+    /// <summary>
+    /// Patches Movie isActive
+    /// </summary>
+    /// <param name="request">Get Id and IsAsync by request object</param>
+    public Task<PatchIsActiveResponse> PatchIsActiveAsync(PatchIsActiveRequest request);
 }
