@@ -1,37 +1,63 @@
 using Microsoft.EntityFrameworkCore;
-using MC.Data;
+using MC.Data.Contexts;
 using MC.ApplicationServices.Implementation;
 using MC.ApplicationServices.Interfaces;
+using System.Reflection;
+using Serilog;
+using Serilog.Events;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
-// Add services to the container.
+Log.Information("Hello, world!");
 
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
-builder.Services.AddDbContext<MovieDbContext>(options => {
-    options.UseSqlServer(connectionString);
-});
-//builder.Services.AddDatabaseDeveloperPAgeExceptionFilter();
+try {
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    // Add services to the container.
 
-// DI
-builder.Services.AddScoped<IMovieServices, MovieServices>();
+    string? connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
+    builder.Services.AddDbContext<MovieDbContext>(options => {
+        options.UseSqlServer(connectionString);
+    });
+    //builder.Services.AddDatabaseDeveloperPAgeExceptionFilter();
 
-var app = builder.Build();
+    builder.Services.AddControllers();
+    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+    });
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+    // DI
+    builder.Services.AddScoped<IMoviesService, MoviesService>();
+
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch(Exception ex)
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Error(ex, "Something went wrong");
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
 }
 
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

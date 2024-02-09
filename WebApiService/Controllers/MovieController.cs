@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MC.Data.Entities;
 using MC.ApplicationServices.Messaging;
+using MC.ApplicationServices.Messaging.Responses;
+using MC.ApplicationServices.Messaging.Requests;
 using MC.ApplicationServices.Interfaces;
 
 namespace MC.WebApiService.Controllers
@@ -15,23 +17,49 @@ namespace MC.WebApiService.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private readonly IMovieServices _services;
+        private readonly IMoviesService _services;
 
-        public MovieController(IMovieServices services)
+        public MovieController(IMoviesService services)
         {
             _services = services;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
+        public async Task<ActionResult<IEnumerable<MC.ApplicationServices.Messaging.Responses.MovieModel>>> GetMovies()
         {
             return Ok(await _services.GetMoviesAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Movie>> GetMovie(int id)
+        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.MovieModel>> GetMovie(int id)
         {
             return Ok(await _services.GetByIdAsync(new (id)));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.MovieModel>> PostMovie(MC.ApplicationServices.Messaging.Requests.MovieModel movie)
+        {
+            return Ok(await _services.CreateMovieAsync(new (movie)));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<MC.ApplicationServices.Messaging.Responses.DeleteMovieResponse>> DeleteMovie(int id)
+        {
+            return Ok(await _services.DeleteMovieAsync(new (id)));
+        }
+
+        /// <summary>
+        ///     Find movie with a given title
+        /// </summary>
+        /// <param name="title"> Movie title</param>
+        /// <returns></returns>
+        [HttpGet("search/{title}")]
+        [ProducesResponseType(typeof(GetByTitleResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByTitle([FromRoute] string title)
+        {
+            return Ok(await _services.GetByTitleAsync(new (title)));
         }
 
         /*
@@ -128,18 +156,5 @@ namespace MC.WebApiService.Controllers
 
 
 
-        /// <summary>
-        ///     Find movie with a given title
-        /// </summary>
-        /// <param name="title"> Movie title</param>
-        /// <returns></returns>
-        [HttpGet("search/{title}")]
-        [ProducesResponseType(typeof(GetByTitleResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetByTitle([FromRoute] string title)
-        {
-            return Ok(await _services.GetByTitleAsync(new (title)));
-        }
     }
 }

@@ -1,6 +1,4 @@
-using MC.Data.Entities;
-
-namespace MC.ApplicationServices.Messaging;
+namespace MC.ApplicationServices.Messaging.Requests;
 
 public class GetByIdRequest : RequestServiceBase
 {
